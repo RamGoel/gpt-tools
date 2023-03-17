@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Text on Image</title>
+    <style>
+        h1 {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+            width: 400px;
+            margin: auto;
+        }
+
+        input[type="text"] {
+            width: 92%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #000;
+        }
+
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .bottom{
+            width: 400px;
+            margin: auto;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Add Text on Image</h1>
+    <form>
+        <label for="image">Choose an image:</label>
+        <input type="file" id="image" name="image"><br><br>
+        <label for="text">Enter text:</label>
+        <input type="text" id="text" name="text"><br><br>
+        <button type="button" onclick="addText()">Add Text</button>
+    </form>
+    <br><br>
+    <div class="bottom">
+
+        <canvas id="canvas"></canvas>
+        <br><br>
+        <button type="button" onclick="download()">Download Image</button>
+    </div>
+
+    <script>
+        // Get the canvas element and the context
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Get the image and text input elements
+        const imageInput = document.getElementById('image');
+        const textInput = document.getElementById('text');
+
+        // Function to add text on image
+        function addText() {
+            // Get the uploaded image and set it as the canvas background
+            const image = new Image();
+            image.onload = function () {
+                canvas.width = image.width;
+                canvas.height = image.height;
+                ctx.drawImage(image, 0, 0);
+                // Add the entered text on the canvas
+                const text = textInput.value;
+                ctx.font = 'bold 50px Arial';
+                ctx.fillStyle = '#fff000';
+                ctx.textAlign = 'center';
+                ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+            }
+            image.src = URL.createObjectURL(imageInput.files[0]);
+        }
+
+        // Function to download the canvas as an image
+        function download() {
+            const link = document.createElement('a');
+            link.download = 'image.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+    </script>
+</body>
+
+</html>
